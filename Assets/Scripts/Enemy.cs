@@ -102,7 +102,7 @@ public class Enemy : MonoBehaviour
     {
         //move toward player
         Vector3 vectorToTarget = target.position - tf.position;
-        tf.position += vectorToTarget.normalized * Speed * Time.deltaTime;
+        tf.position += vectorToTarget.normalized * speed * Time.deltaTime;
     }
 
     public void ChangeState(string newState)
