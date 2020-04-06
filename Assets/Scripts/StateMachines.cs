@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StateMachines : MonoBehaviour
 {
@@ -11,42 +8,53 @@ public class StateMachines : MonoBehaviour
         chase,
         dead
     };
+    public float movementSpeed;
     public EAIStates currentAIState;
     private float m_health;
     public Transform target;
     public float sightCutoffDistance;
-    public float fieldOfViewAngle;
     public float hearingCutOffDistance;
     public float hearingRadius;
+    public float fieldOfView;
+
     // Start is called before the first frame update
     void Start()
     {
         currentAIState = EAIStates.idle;
+        GameManager.instance.currentEnemies.Add(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(Vector3.Distance(transform.position, target.position));
+        if (GameManager.instance.Player != null)
+        {
+            target = GameManager.instance.Player.transform;
+        }
         StateMachine();
     }
 
     private void StateMachine()
     {
-        switch (currentAIState)
+        if (currentAIState == EAIStates.idle)
         {
-            case EAIStates.idle:
-                idle();
-                break;
-            case EAIStates.chase:
-                chase();
-                break;
-            case EAIStates.dead:
-                dead();
-                break;
-            default:
-                break;
+            idle();
+        }
+        else if (currentAIState == EAIStates.dead)
+        {
+            dead();
+        }
+        else if (currentAIState == EAIStates.chase)
+        {
+            chase();
+        }
+        else
+        {
+            Debug.Log("State not found");
         }
     }
+
 
     public void reduceHealth(float amountToReduce)
     {
@@ -71,28 +79,50 @@ public class StateMachines : MonoBehaviour
 
 
 
-    private bool canSee()
+    private bool CanSee(GameObject target)
     {
-        if (Vector3.Distance(transform.position, target.position) > sightCutoffDistance)
+        //Debug.Log("Checking if CanSee");
+        Transform targetTf = target.GetComponent<Transform>();
+        Vector3 targetPosition = targetTf.position;
+        Vector3 agentToTargetVector = targetPosition - transform.position;
+
+        float angleToTarget = Vector3.Angle(agentToTargetVector, transform.right);
+        if (angleToTarget < fieldOfView)
         {
-            return false;
+            RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, agentToTargetVector, sightCutoffDistance);
+            if(hitInfo.collider != null)
+            {
+                if (hitInfo.collider.gameObject == target)
+                {
+                    return true;
+                }
+            }
+            //Debug.Log(hitInfo.collider.gameObject.name);
+           
         }
-        Vector3 dirToTarget = target.position - transform.position;
-        if (Vector3.Angle(transform.position, dirToTarget) > (fieldOfViewAngle / 2))
-        {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     private bool canHear()
     {
-        if ((target.gameObject.GetComponent<NoiseMaker>().m_CurrentNoiseLevel + hearingRadius) < hearingCutOffDistance)
-        { return false; }
+        //Debug.Log("Checking CanHear");
+        if (GameManager.instance.Player != null)
+        {
+            if ((target.gameObject.GetComponent<NoiseMaker>().m_CurrentNoiseLevel + hearingRadius) < hearingCutOffDistance)
+            {
+                //Debug.Log("Can't Hear");
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+            
         return true;
     }
-   
-    
+
+
 
 
     private void dead()
@@ -103,17 +133,32 @@ public class StateMachines : MonoBehaviour
 
     private void chase()
     {
-        if(!canHear() && !canSee())
+        Vector3 DirectiontoMove = target.position - transform.position;
+        DirectiontoMove.Normalize();
+        transform.position += DirectiontoMove * movementSpeed * Time.deltaTime;
+        if (GameManager.instance.Player != null)
         {
-            currentAIState = EAIStates.idle;
+            if (!(canHear() || CanSee(GameManager.instance.Player)))
+            {
+                currentAIState = EAIStates.idle;
+            }
         }
+           
     }
 
     private void idle()
     {
-        if (canHear() || canSee())
+        if (GameManager.instance.Player != null)
         {
-            currentAIState = EAIStates.chase;
+            if (canHear() || CanSee(GameManager.instance.Player))
+            {
+                currentAIState = EAIStates.chase;
+            }
         }
+            
+    }
+    private void OnDestroy()
+    {
+        GameManager.instance.currentEnemies.Remove(this.gameObject);
     }
 }
