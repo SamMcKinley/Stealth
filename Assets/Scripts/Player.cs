@@ -25,8 +25,17 @@ public class Player : MonoBehaviour
         noiseMaker.m_CurrentNoiseLevel = 0;
         if (Input.GetKey(KeyCode.UpArrow))
         {
+<<<<<<< HEAD
             tf.position += tf.right * movementSpeed * Time.deltaTime;
             noiseMaker.m_CurrentNoiseLevel += 1;
+=======
+            tf.position += tf.up * movementSpeed * Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            tf.position -= tf.up * movementSpeed * Time.deltaTime;
+>>>>>>> master
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))

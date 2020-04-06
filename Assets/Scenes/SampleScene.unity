@@ -312,8 +312,14 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 469191218}
   - component: {fileID: 469191219}
+=======
+  - component: {fileID: 186224132}
+  - component: {fileID: 186224131}
+  - component: {fileID: 186224133}
+>>>>>>> master
   m_Layer: 0
   m_Name: EnemySpawnPoint3
   m_TagString: Untagged
@@ -329,24 +335,48 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469191217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: -7.88, y: 2.15, z: 0}
+=======
+<<<<<<< HEAD
+  m_LocalPosition: {x: 0.7, y: 0.6, z: 0}
+>>>>>>> master
   m_LocalScale: {x: 1, y: 1, z: 1}
+=======
+  m_LocalPosition: {x: 43.69, y: 44.54, z: 0}
+  m_LocalScale: {x: 50.635323, y: 38.045803, z: 1}
+>>>>>>> master
   m_Children: []
   m_Father: {fileID: 601920144}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &469191219
+=======
+--- !u!114 &186224133
+>>>>>>> master
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 469191217}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdd906225a1cb124bb338d5a3294b4d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+  m_GameObject: {fileID: 186224130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8dab735bf8c7443a741cc8fd49463e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 90
+  movementSpeed: 70
+>>>>>>> master
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +430,11 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
+<<<<<<< HEAD
   orthographic size: 4.795805
+=======
+  orthographic size: 71.93057
+>>>>>>> master
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
